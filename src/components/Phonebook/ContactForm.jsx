@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 import css from "./phonebook.module.css"
-import { Component } from "react";
+import { useState } from "react";
 import { nanoid } from 'nanoid';
 
 
-export class ContactForm extends Component {
-    state = {
-        name: '',
-        number: ''
-    }
+export const ContactForm = () => {
+    //     name: '',
+    //     number: ''
+    // useState
 
     submitForm = (e) => {
         e.preventDefault();
@@ -45,7 +44,6 @@ export class ContactForm extends Component {
         });
     };
 
-    render() {
         return (
             <div>
                 <form className={css.form} onSubmit={this.submitForm}>
@@ -76,9 +74,6 @@ export class ContactForm extends Component {
             </div>
         )
     }
-
-}
-
 
 ContactForm.propTypes = {
     contacts: PropTypes.array.isRequired,
