@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import css from "./phonebook.module.css"
-import { useState } from "react";
+// import { useState } from "react";
 import { nanoid } from 'nanoid';
 
 
@@ -9,7 +9,7 @@ export const ContactForm = () => {
     //     number: ''
     // useState
 
-    submitForm = (e) => {
+    const submitForm = (e) => {
         e.preventDefault();
         const { name, number } = this.state;
         let contactExists = false;
@@ -38,7 +38,7 @@ export const ContactForm = () => {
     }
 
 
-    handleChange = e => {
+    const handleChange = e => {
         this.setState({
             [e.target.name]: e.target.value,
         });
@@ -46,7 +46,7 @@ export const ContactForm = () => {
 
         return (
             <div>
-                <form className={css.form} onSubmit={this.submitForm}>
+                <form className={css.form} onSubmit={submitForm}>
                     <label> Name
                         <input
                             type="text"
@@ -55,7 +55,7 @@ export const ContactForm = () => {
                             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                             required
                             value={this.state.name}
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                         />
                     </label>
                     <label> Number
@@ -66,7 +66,7 @@ export const ContactForm = () => {
                             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                             required
                             value={this.state.number}
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                         />
                     </label>
                     <button className={css.button}>Add contact</button>
