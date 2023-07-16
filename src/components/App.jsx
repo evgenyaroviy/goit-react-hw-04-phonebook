@@ -1,50 +1,34 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { ContactForm } from "./Phonebook/ContactForm";
 import { ContactList } from "./Contacts/ContactList";
 import { Filter } from "./Filter/Filter";
 import { NotificationMessage } from "./NotificationMessage/NotificationMessage";
 
 
-export class App extends Component {
+export const App = () => {
 
-  state = {
-    contacts: [],
-    filter: '',
-  }
+  const [contacts, setContacts] = useState(() => JSON.parse(localStorage.getItem('contacts')) || []);
+  const [filtered, setFiltered] = useState('');
 
-  componentDidMount() {
-    const localData = localStorage.getItem('contact')
-    if (localData) this.setState({contacts: JSON.parse(localData)})
-}
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.contacts)
-      localStorage.setItem('contact', JSON.stringify(this.state.contacts))
-}
-
-  submitForm = newContact => {
-    const { contacts } = this.state;
-    this.setState({
-      contacts: [...contacts, newContact],
-    });
+  const submitForm = newContact => {
+    setContacts([...contacts, newContact]);
   };
 
-  filterContact = e => {
-    this.setState({
-      filter: e.target.value,
-    });
+  const filterContact = e => {
+    setFiltered(e.target.value);
   };
 
-  delContact = contactId => {
-    this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    }));
+  const delContact = contactId => {
+    
+    setContacts(contacts.filter(contact => contact.id !== contactId));
   };
 
-  render() {
-    const { contacts, filter } = this.state;
     const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+      contact.name.toLowerCase().includes(filtered.toLowerCase())
     );
     return (
       <div>
@@ -52,17 +36,17 @@ componentDidUpdate(prevProps, prevState) {
         <h1>Phonebook</h1>
         <ContactForm
           contacts={contacts}
-          onCreateContact={this.submitForm}
+          onCreateContact={submitForm}
         />
 
 
         <h2>Contacts</h2>
-        {this.state.contacts.length !== 0 ? (
+        {contacts.length !== 0 ? (
           <>
-            <Filter contacts={this.state} onChangeFilter={this.filterContact} />
+            <Filter contacts={[contacts, filtered]} onChangeFilter={filterContact} />
             <ContactList
               filteredContacts={filteredContacts}
-              delContact={this.delContact}
+              delContact={delContact}
             />
           </>
         ) : (
@@ -71,5 +55,5 @@ componentDidUpdate(prevProps, prevState) {
 
       </div >
     );
-  };
+  
 }

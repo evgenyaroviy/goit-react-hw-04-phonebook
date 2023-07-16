@@ -4,6 +4,7 @@ import { NotificationMessage } from "../NotificationMessage/NotificationMessage"
 
 
 export const ContactList = ({ filteredContacts, delContact }) => {
+    console.log(filteredContacts);
     return (
         <>
             {filteredContacts.length !== 0 ? (

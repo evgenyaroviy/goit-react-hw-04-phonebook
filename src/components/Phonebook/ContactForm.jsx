@@ -1,48 +1,49 @@
 import PropTypes from "prop-types";
 import css from "./phonebook.module.css"
-// import { useState } from "react";
+import { useState } from "react";
 import { nanoid } from 'nanoid';
 
 
-export const ContactForm = () => {
-    //     name: '',
-    //     number: ''
-    // useState
+export const ContactForm = ({ contacts, onCreateContact }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-    const submitForm = (e) => {
-        e.preventDefault();
-        const { name, number } = this.state;
-        let contactExists = false;
+    const submitForm = e => {
+      console.log(e);
+    e.preventDefault();
+    let contactExists = false;
 
-        this.props.contacts.forEach(contact => {
-            if (contact.name === name) {
-                contactExists = true;
-            }
-        });
+    contacts.forEach(contact => {
+      if (contact.name === name) {
+        contactExists = true;
+      }
+    });
 
-        if (contactExists) {
-            alert(`${name} is already in contacts`);
-            return;
-        }
-
-        const newContact = {
-            id: nanoid(),
-            name,
-            number,
-        };
-        this.props.onCreateContact(newContact);
-        this.setState({
-            name: '',
-            number: ''
-        })
+    if (contactExists) {
+      alert(`${name} is already in contacts`);
+      return;
     }
 
-
-    const handleChange = e => {
-        this.setState({
-            [e.target.name]: e.target.value,
-        });
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
     };
+
+    onCreateContact(newContact);
+
+    setName('');
+    setNumber('');
+  };
+
+  const handleChange = e => {
+    if (e.target.name === "name") {
+      setName(e.target.value);
+    }
+    if (e.target.name === "number") {
+      setNumber(e.target.value);
+    }
+  };
 
         return (
             <div>
@@ -54,7 +55,7 @@ export const ContactForm = () => {
                             pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                             required
-                            value={this.state.name}
+                            value={name}
                             onChange={handleChange}
                         />
                     </label>
@@ -65,7 +66,7 @@ export const ContactForm = () => {
                             pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
                             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                             required
-                            value={this.state.number}
+                            value={number}
                             onChange={handleChange}
                         />
                     </label>
@@ -74,6 +75,8 @@ export const ContactForm = () => {
             </div>
         )
     }
+
+
 
 ContactForm.propTypes = {
     contacts: PropTypes.array.isRequired,
